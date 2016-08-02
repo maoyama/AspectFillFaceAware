@@ -31,7 +31,7 @@ extension UIImageView {
             if features.count > 0 {
                 print("found \(features.count) faces")
                 let imgSize = CGSize(width: Double(image!.cgImage!.width), height: (Double(image!.cgImage!.height)))
-                self.applyFaceDetection(for: features, size: imgSize, cgImage: image!.cgImage!)
+                self.applyFaceDetection(for: features, size: imgSize, image: image!)
             } else {
                 print("No faces found")
                 DispatchQueue.main.async {
@@ -41,7 +41,7 @@ extension UIImageView {
         }
     }
     
-    private func applyFaceDetection(for features: [AnyObject], size: CGSize, cgImage: CGImage) {
+    private func applyFaceDetection(for features: [AnyObject], size: CGSize, image: UIImage) {
         var rect = CGRect.zero
         var rightBorder = 0.0
         var bottomBorder = 0.0
@@ -95,7 +95,8 @@ extension UIImageView {
         DispatchQueue.main.sync {
             let layer = self.imageLayer()
             layer.frame = CGRect(x: offset.x, y: offset.y, width: finalSize.width, height: finalSize.height)
-            layer.contents = cgImage
+            layer.contents = image.cgImage
+            self.image = image
         }
     }
     
